@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, DateTime, Enum
 from sqlalchemy.orm import relationship
 
 from src.core.settings import Base
-from .association_tables import movie_cast_association
+# from .association_tables import movie_cast_association
 
 class Cast(Base):
     __tablename__ = "cast"
@@ -13,8 +13,8 @@ class Cast(Base):
     created_at = Column(DateTime)
     updated_at = Column(DateTime)
 
-    movies = relationship(
-        "Movie",
-        secondary=movie_cast_association,
-        back_populates="cast"
-    )
+    # movies = relationship(
+    #     "Movie",
+    #     secondary=movie_cast_association,
+    #     back_populates="cast"
+    # )

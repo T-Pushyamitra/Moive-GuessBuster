@@ -3,13 +3,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from uvicorn import run
 
 from src.api.endpoints import router
-from src.core.settings import settings
+from src.core.settings import settings, __engine as e, Base
 from src.core.base import AppSettings
 
 class App:
     
     def __init__(self, router: APIRouter, settings: AppSettings):
         self.__app = FastAPI(**settings.set_app_attributes)
+        self.create_tables()
         self.__setup_middlewares(settings=settings)
         self.__add_routes(router=router, settings=settings)
         
@@ -24,6 +25,10 @@ class App:
 
     def __add_routes(self, router: APIRouter, settings: AppSettings):
         self.__app.include_router(router=router, prefix=settings.API_PREFIX)
+        
+    def create_tables(self):
+        Base.metadata.create_all(e)
+        
 
     def __call__(self) -> FastAPI:
         return self.__app
@@ -37,6 +42,7 @@ app = initialize_application()
 
 
 if __name__ == "__main__":
+    
     run(
         app=app,
         host=settings.HOST,
