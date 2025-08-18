@@ -2,6 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session, DeclarativeBase, class_mapper, ColumnProperty, RelationshipProperty
 
 from src.core.base import AppEnvironment, AppSettings
+
 from functools import lru_cache
 from os import environ
 
@@ -80,8 +81,8 @@ class Base(DeclarativeBase):
                         result[attr.key] = value.to_dict(include_relationships=False, visited=visited)
     
             return result
-    
-def get_db() -> Session:
+
+def get_db() -> Session: # type: ignore
     db = SessionLocal()
     try:
         yield db
