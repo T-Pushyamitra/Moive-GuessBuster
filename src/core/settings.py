@@ -82,7 +82,7 @@ class Base(DeclarativeBase):
     
             return result
 
-def get_db() -> Session:
+def get_db() -> Session: # type: ignore
     db = SessionLocal()
     try:
         yield db

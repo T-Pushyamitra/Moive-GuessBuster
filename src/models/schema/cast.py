@@ -3,12 +3,12 @@ from .base import BaseSchemaModel
 class __CastBase(BaseSchemaModel):
     name: str
     title: str  # e.g., Actor, Director
-
-class CastCreate(__CastBase):
+    model_config = {
+        "from_attributes": True
+    }
+    
+class CastCreateSchema(__CastBase):
     pass
 
-class CastOut(__CastBase):
+class CastSchema(__CastBase):
     id: int
-
-    class Config:
-        orm_mode = True

@@ -1,10 +1,12 @@
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI, APIRouter, Request, responses
 from fastapi.middleware.cors import CORSMiddleware
 from uvicorn import run
 
 from src.api.endpoints import router
 from src.core.settings import settings, __engine as e, Base
 from src.core.base import AppSettings
+from src.exception.custom_exception import AppError
+from src.models.schema.api_response import ApiResponse
 
 class App:
     
@@ -40,7 +42,16 @@ def initialize_application() -> FastAPI:
 
 app = initialize_application()
 
-
+@app.exception_handler(AppError)
+def app_error_handler(request: Request, exc: AppError):
+       return responses.JSONResponse(
+        status_code=exc.status_code,
+        content=ApiResponse[None](
+            status_code=exc.status_code,
+            error_message=exc.message
+        ).model_dump()
+    )
+    
 if __name__ == "__main__":
     
     run(
